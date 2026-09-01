@@ -50,7 +50,15 @@ fun RecipesApp(appContainer: AppContainer) {
                     ShoppingListScreen(appContainer = appContainer)
                 }
                 composable(ROUTE_ADD_RECIPE) {
-                    AddRecipeScreen(appContainer = appContainer, onSaved = { navController.popBackStack() })
+                    AddRecipeScreen(
+                        appContainer = appContainer,
+                        onSaved = { navController.popBackStack() },
+                        onImportedAndSaved = { recipeId ->
+                            navController.navigate(recipeDetailRoute(recipeId)) {
+                                popUpTo(ROUTE_ADD_RECIPE) { inclusive = true }
+                            }
+                        },
+                    )
                 }
             }
         }

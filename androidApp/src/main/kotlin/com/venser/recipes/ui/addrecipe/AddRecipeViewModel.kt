@@ -66,6 +66,22 @@ class AddRecipeViewModel(private val appContainer: AppContainer) : ViewModel() {
             .onFailure { error -> importError = error.message ?: "Не удалось разобрать файл" }
     }
 
+    fun importFromClipboardAndSave(json: String): Long? {
+        val parsed = parseRecipeJson(json).getOrElse { error ->
+            importError = error.message ?: "Не удалось разобрать буфер обмена"
+            return null
+        }
+        importError = null
+        return appContainer.addRecipe(
+            title = parsed.title.trim(),
+            tags = parsed.tags,
+            servings = parsed.servings,
+            ingredients = parsed.ingredients,
+            steps = parsed.steps,
+            notes = parsed.notes,
+        )
+    }
+
     private fun applyImportedRecipe(parsed: ParsedRecipe) {
         importError = null
         title = parsed.title

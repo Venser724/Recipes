@@ -26,10 +26,12 @@ class RecipeRepository(private val database: RecipesDatabase) {
         ingredients: List<Ingredient>,
         steps: List<Step>,
         notes: String? = null,
-    ) {
+    ): Long {
+        var newRecipeId = 0L
         database.transaction {
             database.recipesQueries.insertRecipe(title = title, servings = servings.toLong(), notes = notes)
             val recipeId = database.recipesQueries.lastInsertRowId().executeAsOne()
+            newRecipeId = recipeId
             tags.forEach { tag ->
                 database.recipesQueries.insertRecipeTag(recipeId = recipeId, tag = tag)
             }
@@ -50,6 +52,7 @@ class RecipeRepository(private val database: RecipesDatabase) {
                 )
             }
         }
+        return newRecipeId
     }
 
     fun deleteRecipe(id: Long) {

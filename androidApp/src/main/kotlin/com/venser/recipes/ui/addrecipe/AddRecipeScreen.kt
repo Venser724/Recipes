@@ -42,7 +42,7 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRecipeScreen(appContainer: AppContainer, onSaved: () -> Unit) {
+fun AddRecipeScreen(appContainer: AppContainer, onSaved: () -> Unit, onImportedAndSaved: (Long) -> Unit) {
     val viewModel: AddRecipeViewModel = viewModel(
         factory = viewModelFactory { initializer { AddRecipeViewModel(appContainer) } },
     )
@@ -93,7 +93,8 @@ fun AddRecipeScreen(appContainer: AppContainer, onSaved: () -> Unit) {
                         coroutineScope.launch {
                             val text = clipboard.getClipEntry()?.clipData?.getItemAt(0)
                                 ?.coerceToText(context)?.toString().orEmpty()
-                            viewModel.importFromJson(text)
+                            val recipeId = viewModel.importFromClipboardAndSave(text)
+                            if (recipeId != null) onImportedAndSaved(recipeId)
                         }
                     },
                     modifier = Modifier
