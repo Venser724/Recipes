@@ -8,16 +8,18 @@ import com.venser.recipes.db.RecipesDatabase
 import com.venser.recipes.domain.usecase.GenerateShoppingListUseCase
 import com.venser.recipes.domain.usecase.GetRecipeUseCase
 import com.venser.recipes.domain.usecase.GetRecipesUseCase
+import com.venser.recipes.domain.usecase.GetShoppingListUseCase
 import com.venser.recipes.domain.usecase.ToggleShoppingItemUseCase
 
 class AppContainer(driverFactory: DatabaseDriverFactory) {
     private val database = RecipesDatabase(driverFactory.createDriver())
 
-    val recipeRepository = RecipeRepository(database)
-    val shoppingListRepository = ShoppingListRepository(database)
+    private val recipeRepository = RecipeRepository(database)
+    private val shoppingListRepository = ShoppingListRepository(database)
 
     val getRecipes = GetRecipesUseCase(recipeRepository)
     val getRecipe = GetRecipeUseCase(recipeRepository)
+    val getShoppingList = GetShoppingListUseCase(shoppingListRepository)
     val generateShoppingList = GenerateShoppingListUseCase(recipeRepository, shoppingListRepository)
     val toggleShoppingItem = ToggleShoppingItemUseCase(shoppingListRepository)
 
