@@ -86,4 +86,66 @@ class ParseRecipeJsonTest {
     fun `fails on malformed json`() {
         assertTrue(parseRecipeJson("not json at all").isFailure)
     }
+
+    @Test
+    fun `strips markdown code fence with json language tag`() {
+        val json = """
+            ```json
+            { "title": "Рецепт", "servings": 2 }
+            ```
+        """.trimIndent()
+
+        assertTrue(parseRecipeJson(json).isSuccess)
+    }
+
+    @Test
+    fun `strips bare markdown code fence`() {
+        val json = """
+            ```
+            { "title": "Рецепт", "servings": 2 }
+            ```
+        """.trimIndent()
+
+        assertTrue(parseRecipeJson(json).isSuccess)
+    }
+
+    @Test
+    fun `ignores leading prose before the json object`() {
+        val json = """
+            Вот JSON:
+            { "title": "Рецепт", "servings": 2 }
+        """.trimIndent()
+
+        assertTrue(parseRecipeJson(json).isSuccess)
+    }
+
+    @Test
+    fun `ignores trailing prose after the json object`() {
+        val json = """
+            { "title": "Рецепт", "servings": 2 }
+            Надеюсь, это поможет!
+        """.trimIndent()
+
+        assertTrue(parseRecipeJson(json).isSuccess)
+    }
+
+    @Test
+    fun `allows a trailing comma in an object`() {
+        val json = """{ "title": "Рецепт", "servings": 2, }"""
+
+        assertTrue(parseRecipeJson(json).isSuccess)
+    }
+
+    @Test
+    fun `allows a trailing comma in an array`() {
+        val json = """
+            {
+              "title": "Рецепт",
+              "servings": 2,
+              "tags": ["Завтрак",]
+            }
+        """.trimIndent()
+
+        assertTrue(parseRecipeJson(json).isSuccess)
+    }
 }

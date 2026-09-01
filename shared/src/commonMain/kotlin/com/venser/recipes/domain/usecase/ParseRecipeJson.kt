@@ -30,10 +30,19 @@ data class ParsedRecipe(
     val notes: String?,
 )
 
-private val recipeJson = Json { ignoreUnknownKeys = true }
+private val recipeJson = Json {
+    ignoreUnknownKeys = true
+    allowTrailingComma = true
+}
+
+private fun extractJsonObject(raw: String): String {
+    val start = raw.indexOf('{')
+    val end = raw.lastIndexOf('}')
+    return if (start != -1 && end != -1 && end > start) raw.substring(start, end + 1) else raw
+}
 
 fun parseRecipeJson(json: String): Result<ParsedRecipe> = runCatching {
-    val payload = recipeJson.decodeFromString<RecipeImportPayload>(json)
+    val payload = recipeJson.decodeFromString<RecipeImportPayload>(extractJsonObject(json))
     require(payload.title.isNotBlank()) { "Название рецепта не может быть пустым" }
     require(payload.servings > 0) { "Количество порций должно быть больше нуля" }
 
