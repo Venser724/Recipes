@@ -26,6 +26,8 @@ Rules:
 - timerSeconds is an integer number of seconds. Convert minutes to seconds (minutes * 60). Include it ONLY when the step explicitly states a wait/cook time; omit it otherwise — never invent a timer.
 - Never insert a raw line break inside a string value; keep each string on one line.
 - Escape quotation marks inside string values.
+- If the text after "Recipe to convert:" already lists ingredients and steps, convert it as-is without changing amounts or steps.
+- If it is just a dish name or short description with no ingredient list or steps, first write a typical recipe for it yourself, then convert that recipe into the same JSON schema.
 
 Recipe to convert:
 <paste recipe text or attach a screenshot here>
