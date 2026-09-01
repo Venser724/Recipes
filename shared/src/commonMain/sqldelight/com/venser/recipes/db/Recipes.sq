@@ -1,7 +1,8 @@
 CREATE TABLE Recipe (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    servings INTEGER NOT NULL
+    servings INTEGER NOT NULL,
+    notes TEXT
 );
 
 CREATE TABLE RecipeTag (
@@ -44,7 +45,7 @@ selectRecipeById:
 SELECT * FROM Recipe WHERE id = ?;
 
 insertRecipe:
-INSERT INTO Recipe(title, servings) VALUES (?, ?);
+INSERT INTO Recipe(title, servings, notes) VALUES (?, ?, ?);
 
 lastInsertRowId:
 SELECT last_insert_rowid();

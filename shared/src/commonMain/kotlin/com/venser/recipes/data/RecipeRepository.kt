@@ -25,9 +25,10 @@ class RecipeRepository(private val database: RecipesDatabase) {
         servings: Int,
         ingredients: List<Ingredient>,
         steps: List<Step>,
+        notes: String? = null,
     ) {
         database.transaction {
-            database.recipesQueries.insertRecipe(title = title, servings = servings.toLong())
+            database.recipesQueries.insertRecipe(title = title, servings = servings.toLong(), notes = notes)
             val recipeId = database.recipesQueries.lastInsertRowId().executeAsOne()
             tags.forEach { tag ->
                 database.recipesQueries.insertRecipeTag(recipeId = recipeId, tag = tag)
@@ -68,6 +69,7 @@ class RecipeRepository(private val database: RecipesDatabase) {
             servings = row.servings.toInt(),
             ingredients = ingredients,
             steps = steps,
+            notes = row.notes,
         )
     }
 

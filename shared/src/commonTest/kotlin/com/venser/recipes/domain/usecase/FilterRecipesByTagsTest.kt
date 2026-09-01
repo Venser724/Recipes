@@ -13,6 +13,7 @@ class FilterRecipesByTagsTest {
         servings = 1,
         ingredients = emptyList(),
         steps = emptyList(),
+        notes = null,
     )
 
     @Test

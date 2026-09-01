@@ -7,4 +7,5 @@ data class Recipe(
     val servings: Int,
     val ingredients: List<Ingredient>,
     val steps: List<Step>,
+    val notes: String?,
 )

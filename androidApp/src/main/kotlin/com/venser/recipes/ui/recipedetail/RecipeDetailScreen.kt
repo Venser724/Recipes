@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -81,6 +84,31 @@ fun RecipeDetailScreen(appContainer: AppContainer, recipeId: Long) {
                 )
             }
             items(recipe.steps) { step -> StepRow(step) }
+            val notes = recipe.notes
+            if (!notes.isNullOrBlank()) {
+                item {
+                    NotesCard(notes, modifier = Modifier.padding(top = 8.dp, bottom = 16.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun NotesCard(notes: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text("Заметки", style = MaterialTheme.typography.titleSmall)
+            Text(
+                notes,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 4.dp),
+            )
         }
     }
 }
