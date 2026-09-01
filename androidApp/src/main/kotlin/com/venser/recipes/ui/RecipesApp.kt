@@ -12,6 +12,7 @@ import com.venser.recipes.di.AppContainer
 import com.venser.recipes.ui.recipedetail.RecipeDetailScreen
 import com.venser.recipes.ui.recipelist.RecipeListScreen
 import com.venser.recipes.ui.shoppinglist.ShoppingListScreen
+import com.venser.recipes.ui.theme.RecipesTheme
 
 private const val ROUTE_RECIPE_LIST = "recipeList"
 private const val ROUTE_SHOPPING_LIST = "shoppingList"
@@ -21,8 +22,8 @@ private fun recipeDetailRoute(recipeId: Long) = "recipeDetail/$recipeId"
 
 @Composable
 fun RecipesApp(appContainer: AppContainer) {
-    MaterialTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
+    RecipesTheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = ROUTE_RECIPE_LIST) {
                 composable(ROUTE_RECIPE_LIST) {

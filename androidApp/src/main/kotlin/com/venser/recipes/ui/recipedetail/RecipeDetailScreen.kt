@@ -1,16 +1,22 @@
 package com.venser.recipes.ui.recipedetail
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -89,11 +95,25 @@ private fun IngredientRow(ingredient: Ingredient) {
 
 @Composable
 private fun StepRow(step: Step) {
-    Column(modifier = Modifier.padding(bottom = 12.dp)) {
-        Text("${step.order}. ${step.text}")
-        val timerSeconds = step.timerSeconds
-        if (timerSeconds != null) {
-            Text("⏱ ${formatDuration(timerSeconds)}", style = MaterialTheme.typography.bodySmall)
+    Row(modifier = Modifier.padding(bottom = 16.dp)) {
+        Box(
+            modifier = Modifier
+                .size(28.dp)
+                .background(MaterialTheme.colorScheme.secondaryContainer, CircleShape),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text("${step.order}", style = MaterialTheme.typography.labelLarge)
+        }
+        Column(modifier = Modifier.padding(start = 12.dp)) {
+            Text(step.text)
+            val timerSeconds = step.timerSeconds
+            if (timerSeconds != null) {
+                Text(
+                    "⏱ ${formatDuration(timerSeconds)}",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 2.dp),
+                )
+            }
         }
     }
 }

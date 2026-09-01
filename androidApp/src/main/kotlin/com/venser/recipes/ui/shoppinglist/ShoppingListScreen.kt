@@ -27,8 +27,8 @@ import com.venser.recipes.di.AppContainer
 import com.venser.recipes.domain.model.ShoppingListItem
 import com.venser.recipes.ui.formatAmount
 
-private val CheckedBackground = Color(0xFFC8E6C9)
-private val CheckedForeground = Color(0xFF2E7D32)
+private val CheckedBackground = Color(0xFF1B3B1F)
+private val CheckedForeground = Color(0xFF66BB6A)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
