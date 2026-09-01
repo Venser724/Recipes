@@ -9,8 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,10 +19,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.venser.recipes.R
 import com.venser.recipes.di.AppContainer
 import com.venser.recipes.domain.model.Recipe
 
@@ -85,7 +88,13 @@ private fun RecipeRow(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Checkbox(checked = isSelected, onCheckedChange = { onSelectToggle() })
+        IconButton(onClick = onSelectToggle) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_shopping_cart),
+                contentDescription = if (isSelected) "Убрать из списка покупок" else "Добавить в список покупок",
+                tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         Column(modifier = Modifier.padding(start = 8.dp)) {
             Text(recipe.title)
             Text("${recipe.category} · ${recipe.servings} порц.", style = MaterialTheme.typography.bodySmall)
