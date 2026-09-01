@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.venser.recipes.di.AppContainer
 import com.venser.recipes.ui.addrecipe.AddRecipeScreen
+import com.venser.recipes.ui.help.HelpScreen
 import com.venser.recipes.ui.recipedetail.RecipeDetailScreen
 import com.venser.recipes.ui.recipelist.RecipeListScreen
 import com.venser.recipes.ui.shoppinglist.ShoppingListScreen
@@ -19,6 +20,7 @@ private const val ROUTE_RECIPE_LIST = "recipeList"
 private const val ROUTE_SHOPPING_LIST = "shoppingList"
 private const val ROUTE_ADD_RECIPE = "addRecipe"
 private const val ROUTE_RECIPE_DETAIL = "recipeDetail/{recipeId}"
+private const val ROUTE_HELP = "help"
 
 private fun recipeDetailRoute(recipeId: Long) = "recipeDetail/$recipeId"
 
@@ -34,7 +36,11 @@ fun RecipesApp(appContainer: AppContainer) {
                         onOpenRecipe = { recipeId -> navController.navigate(recipeDetailRoute(recipeId)) },
                         onOpenShoppingList = { navController.navigate(ROUTE_SHOPPING_LIST) },
                         onAddRecipe = { navController.navigate(ROUTE_ADD_RECIPE) },
+                        onOpenHelp = { navController.navigate(ROUTE_HELP) },
                     )
+                }
+                composable(ROUTE_HELP) {
+                    HelpScreen()
                 }
                 composable(ROUTE_RECIPE_DETAIL) { backStackEntry ->
                     val recipeId = backStackEntry.arguments?.getString("recipeId")?.toLongOrNull()

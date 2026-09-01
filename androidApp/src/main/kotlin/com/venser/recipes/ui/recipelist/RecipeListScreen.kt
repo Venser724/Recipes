@@ -1,6 +1,7 @@
 package com.venser.recipes.ui.recipelist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
@@ -16,10 +17,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -56,6 +59,7 @@ fun RecipeListScreen(
     onOpenRecipe: (Long) -> Unit,
     onOpenShoppingList: () -> Unit,
     onAddRecipe: () -> Unit,
+    onOpenHelp: () -> Unit,
 ) {
     val viewModel: RecipeListViewModel = viewModel(
         factory = viewModelFactory { initializer { RecipeListViewModel(appContainer) } },
@@ -71,6 +75,20 @@ fun RecipeListScreen(
             TopAppBar(
                 title = { Text("Рецепты") },
                 actions = {
+                    IconButton(onClick = onOpenHelp) {
+                        Box(
+                            modifier = Modifier
+                                .size(22.dp)
+                                .border(1.6.dp, MaterialTheme.colorScheme.onBackground, CircleShape),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                "?",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onBackground,
+                            )
+                        }
+                    }
                     IconButton(onClick = onAddRecipe) {
                         Icon(painter = painterResource(id = R.drawable.ic_add), contentDescription = "Добавить рецепт")
                     }
