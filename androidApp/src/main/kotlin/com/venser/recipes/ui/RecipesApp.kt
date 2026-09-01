@@ -39,7 +39,11 @@ fun RecipesApp(appContainer: AppContainer) {
                 composable(ROUTE_RECIPE_DETAIL) { backStackEntry ->
                     val recipeId = backStackEntry.arguments?.getString("recipeId")?.toLongOrNull()
                     if (recipeId != null) {
-                        RecipeDetailScreen(appContainer = appContainer, recipeId = recipeId)
+                        RecipeDetailScreen(
+                            appContainer = appContainer,
+                            recipeId = recipeId,
+                            onDeleted = { navController.popBackStack() },
+                        )
                     }
                 }
                 composable(ROUTE_SHOPPING_LIST) {

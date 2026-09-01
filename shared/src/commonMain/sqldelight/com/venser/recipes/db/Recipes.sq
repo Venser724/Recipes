@@ -71,6 +71,18 @@ SELECT * FROM Step WHERE recipeId = ? ORDER BY stepOrder;
 insertStep:
 INSERT INTO Step(recipeId, stepOrder, text, timerSeconds) VALUES (?, ?, ?, ?);
 
+deleteRecipe:
+DELETE FROM Recipe WHERE id = ?;
+
+deleteRecipeTagsForRecipe:
+DELETE FROM RecipeTag WHERE recipeId = ?;
+
+deleteIngredientsForRecipe:
+DELETE FROM Ingredient WHERE recipeId = ?;
+
+deleteStepsForRecipe:
+DELETE FROM Step WHERE recipeId = ?;
+
 selectAllShoppingItems:
 SELECT * FROM ShoppingListItem ORDER BY name;
 

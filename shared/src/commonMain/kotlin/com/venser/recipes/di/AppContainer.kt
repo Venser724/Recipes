@@ -6,6 +6,7 @@ import com.venser.recipes.data.ShoppingListRepository
 import com.venser.recipes.data.seedRecipesIfEmpty
 import com.venser.recipes.db.RecipesDatabase
 import com.venser.recipes.domain.usecase.AddRecipeUseCase
+import com.venser.recipes.domain.usecase.DeleteRecipeUseCase
 import com.venser.recipes.domain.usecase.GenerateShoppingListUseCase
 import com.venser.recipes.domain.usecase.GetAllTagsUseCase
 import com.venser.recipes.domain.usecase.GetRecipeUseCase
@@ -23,6 +24,7 @@ class AppContainer(driverFactory: DatabaseDriverFactory) {
     val getRecipe = GetRecipeUseCase(recipeRepository)
     val getAllTags = GetAllTagsUseCase(recipeRepository)
     val addRecipe = AddRecipeUseCase(recipeRepository)
+    val deleteRecipe = DeleteRecipeUseCase(recipeRepository)
     val getShoppingList = GetShoppingListUseCase(shoppingListRepository)
     val generateShoppingList = GenerateShoppingListUseCase(recipeRepository, shoppingListRepository)
     val toggleShoppingItem = ToggleShoppingItemUseCase(shoppingListRepository)

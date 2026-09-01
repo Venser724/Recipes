@@ -52,6 +52,15 @@ class RecipeRepository(private val database: RecipesDatabase) {
         }
     }
 
+    fun deleteRecipe(id: Long) {
+        database.transaction {
+            database.recipesQueries.deleteRecipeTagsForRecipe(id)
+            database.recipesQueries.deleteIngredientsForRecipe(id)
+            database.recipesQueries.deleteStepsForRecipe(id)
+            database.recipesQueries.deleteRecipe(id)
+        }
+    }
+
     private fun toRecipe(row: RecipeRow): Recipe {
         val tags = database.recipesQueries.selectTagsForRecipe(row.id)
             .executeAsList()
