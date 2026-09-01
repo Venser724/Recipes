@@ -16,9 +16,15 @@ class RecipeRepository(private val database: RecipesDatabase) {
     fun getRecipe(id: Long): Recipe? =
         database.recipesQueries.selectRecipeById(id).executeAsOneOrNull()?.let(::toRecipe)
 
-    fun addRecipe(title: String, servings: Int, ingredients: List<Ingredient>, steps: List<Step>) {
+    fun addRecipe(
+        title: String,
+        category: String,
+        servings: Int,
+        ingredients: List<Ingredient>,
+        steps: List<Step>,
+    ) {
         database.transaction {
-            database.recipesQueries.insertRecipe(title = title, servings = servings.toLong())
+            database.recipesQueries.insertRecipe(title = title, category = category, servings = servings.toLong())
             val recipeId = database.recipesQueries.lastInsertRowId().executeAsOne()
             ingredients.forEach { ingredient ->
                 database.recipesQueries.insertIngredient(
@@ -49,6 +55,7 @@ class RecipeRepository(private val database: RecipesDatabase) {
         return Recipe(
             id = row.id,
             title = row.title,
+            category = row.category,
             servings = row.servings.toInt(),
             ingredients = ingredients,
             steps = steps,

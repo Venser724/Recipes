@@ -8,6 +8,7 @@ internal fun seedRecipesIfEmpty(repository: RecipeRepository) {
 
     repository.addRecipe(
         title = "Омлет с сыром",
+        category = "Завтрак",
         servings = 2,
         ingredients = listOf(
             Ingredient(name = "Яйцо", amount = 4.0, unit = "шт"),
@@ -25,6 +26,7 @@ internal fun seedRecipesIfEmpty(repository: RecipeRepository) {
 
     repository.addRecipe(
         title = "Паста с томатным соусом",
+        category = "Основное блюдо",
         servings = 2,
         ingredients = listOf(
             Ingredient(name = "Спагетти", amount = 200.0, unit = "г"),
@@ -41,6 +43,7 @@ internal fun seedRecipesIfEmpty(repository: RecipeRepository) {
 
     repository.addRecipe(
         title = "Овощной салат",
+        category = "Салат",
         servings = 4,
         ingredients = listOf(
             Ingredient(name = "Огурец", amount = 2.0, unit = "шт"),

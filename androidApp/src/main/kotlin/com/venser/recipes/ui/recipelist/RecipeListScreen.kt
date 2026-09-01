@@ -88,7 +88,7 @@ private fun RecipeRow(
         Checkbox(checked = isSelected, onCheckedChange = { onSelectToggle() })
         Column(modifier = Modifier.padding(start = 8.dp)) {
             Text(recipe.title)
-            Text("${recipe.servings} порц.", style = MaterialTheme.typography.bodySmall)
+            Text("${recipe.category} · ${recipe.servings} порц.", style = MaterialTheme.typography.bodySmall)
         }
     }
 }

@@ -49,7 +49,7 @@ fun RecipeDetailScreen(appContainer: AppContainer, recipeId: Long) {
         ) {
             item {
                 Text(
-                    "${recipe.servings} порц.",
+                    "${recipe.category} · ${recipe.servings} порц.",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(top = 8.dp),
                 )
