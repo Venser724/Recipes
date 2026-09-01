@@ -1,5 +1,6 @@
 package com.venser.recipes.ui.addrecipe
 
+import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -62,11 +63,28 @@ fun AddRecipeScreen(appContainer: AppContainer, onSaved: () -> Unit) {
         topBar = { TopAppBar(title = { Text("Новый рецепт") }) },
         bottomBar = {
             Column(modifier = Modifier.padding(16.dp)) {
-                OutlinedButton(
-                    onClick = { importLauncher.launch("*/*") },
+                Row(
                     modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Text("Импорт из JSON")
+                    OutlinedButton(
+                        onClick = { importLauncher.launch("*/*") },
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text("Импорт из JSON")
+                    }
+                    OutlinedButton(
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT, RECIPE_IMPORT_TEMPLATE)
+                            }
+                            context.startActivity(Intent.createChooser(intent, null))
+                        },
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text("Отправить шаблон")
+                    }
                 }
                 viewModel.importError?.let { error ->
                     Text(
