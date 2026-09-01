@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,6 +47,7 @@ fun AddRecipeScreen(appContainer: AppContainer, onSaved: () -> Unit) {
         factory = viewModelFactory { initializer { AddRecipeViewModel(appContainer) } },
     )
     val context = LocalContext.current
+    val clipboard = LocalClipboard.current
     val coroutineScope = rememberCoroutineScope()
     val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -85,6 +87,20 @@ fun AddRecipeScreen(appContainer: AppContainer, onSaved: () -> Unit) {
                     ) {
                         Text("Отправить шаблон")
                     }
+                }
+                OutlinedButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            val text = clipboard.getClipEntry()?.clipData?.getItemAt(0)
+                                ?.coerceToText(context)?.toString().orEmpty()
+                            viewModel.importFromJson(text)
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                ) {
+                    Text("Вставить из буфера")
                 }
                 viewModel.importError?.let { error ->
                     Text(
