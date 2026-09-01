@@ -131,4 +131,45 @@ internal fun seedRecipesIfEmpty(repository: RecipeRepository) {
         notes = "Для более насыщенного вкуса можно заменить часть молока сливками. " +
             "Хлеб лучше брать вчерашний — свежий слишком мягкий и может расползтись.",
     )
+
+    repository.addRecipe(
+        title = "Паста с тунцом и песто",
+        tags = listOf("Паста", "Основное блюдо", "Морепродукты"),
+        servings = 2,
+        ingredients = listOf(
+            Ingredient(name = "Спагетти (или другая паста)", amount = 200.0, unit = "г"),
+            Ingredient(name = "Соус песто", amount = 2.0, unit = "ст.л."),
+            Ingredient(name = "Тунец консервированный", amount = 1.0, unit = "банка"),
+            Ingredient(name = "Красный лук", amount = 0.5, unit = "шт"),
+            Ingredient(name = "Чеснок", amount = 1.0, unit = "зубчик"),
+            Ingredient(name = "Соль", amount = 0.5, unit = "ч.л."),
+            Ingredient(name = "Оливковое масло", amount = 2.0, unit = "ст.л."),
+            Ingredient(name = "Свежий базилик", amount = 5.0, unit = "листик"),
+            Ingredient(name = "Свежий укроп (рубленый)", amount = 1.0, unit = "ст.л."),
+            Ingredient(name = "Смесь итальянских трав", amount = 1.0, unit = "ч.л."),
+            Ingredient(name = "Томаты черри", amount = 6.0, unit = "шт"),
+            Ingredient(name = "Вода после варки пасты", amount = 0.5, unit = "стакан"),
+            Ingredient(name = "Тёртый пармезан (для подачи, по желанию)", amount = 30.0, unit = "г"),
+        ),
+        steps = listOf(
+            Step(
+                order = 1,
+                text = "Мелко нарезать лук, раздавить и нарезать чеснок, разрезать томаты черри пополам, слить воду с тунца",
+                timerSeconds = null,
+            ),
+            Step(order = 2, text = "Сварить пасту до состояния al dente, отложить немного воды после варки", timerSeconds = null),
+            Step(order = 3, text = "Обжарить лук и чеснок на оливковом масле", timerSeconds = 180),
+            Step(order = 4, text = "Добавить томаты черри и жарить до размягчения", timerSeconds = 300),
+            Step(order = 5, text = "Добавить тунец и обжарить", timerSeconds = 120),
+            Step(
+                order = 6,
+                text = "Соединить пасту с отложенной водой, базиликом, укропом и травами, активно перемешать",
+                timerSeconds = 360,
+            ),
+            Step(order = 7, text = "Добавить песто и перемешать", timerSeconds = 180),
+            Step(order = 8, text = "Подавать, посыпав тёртым пармезаном по желанию", timerSeconds = null),
+        ),
+        notes = "Базилик, укроп и смесь итальянских трав добавлены на этапе смешивания с пастой — " +
+            "можно добавить их раньше, вместе с помидорами, если хочется иначе.",
+    )
 }
