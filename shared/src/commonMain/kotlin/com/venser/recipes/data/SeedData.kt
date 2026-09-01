@@ -106,4 +106,29 @@ internal fun seedRecipesIfEmpty(repository: RecipeRepository) {
             Step(order = 3, text = "Обжарить котлеты с двух сторон", timerSeconds = 600),
         ),
     )
+
+    repository.addRecipe(
+        title = "Французские тосты",
+        tags = listOf("Завтрак", "Сладкое"),
+        servings = 4,
+        ingredients = listOf(
+            Ingredient(name = "Белый хлеб (лучше слегка чёрствый)", amount = 8.0, unit = "ломтик"),
+            Ingredient(name = "Яйцо (крупное)", amount = 3.0, unit = "шт"),
+            Ingredient(name = "Молоко", amount = 200.0, unit = "мл"),
+            Ingredient(name = "Сахар", amount = 2.0, unit = "ст.л."),
+            Ingredient(name = "Ванильный экстракт", amount = 1.0, unit = "ч.л."),
+            Ingredient(name = "Молотая корица", amount = 1.0, unit = "ч.л."),
+            Ingredient(name = "Соль", amount = 1.0, unit = "щепотка"),
+            Ingredient(name = "Сливочное масло (для жарки)", amount = 2.0, unit = "ст.л."),
+        ),
+        steps = listOf(
+            Step(order = 1, text = "Взбить яйца с молоком, сахаром, ванилью, корицей и солью до однородности", timerSeconds = null),
+            Step(order = 2, text = "Растопить сливочное масло на сковороде на среднем огне", timerSeconds = null),
+            Step(order = 3, text = "Обмакнуть ломтики хлеба в яичную смесь с обеих сторон", timerSeconds = 20),
+            Step(order = 4, text = "Обжарить ломтики на сковороде до золотистой корочки", timerSeconds = 180),
+            Step(order = 5, text = "Подавать горячими с кленовым сиропом, мёдом, ягодами или сахарной пудрой", timerSeconds = null),
+        ),
+        notes = "Для более насыщенного вкуса можно заменить часть молока сливками. " +
+            "Хлеб лучше брать вчерашний — свежий слишком мягкий и может расползтись.",
+    )
 }
