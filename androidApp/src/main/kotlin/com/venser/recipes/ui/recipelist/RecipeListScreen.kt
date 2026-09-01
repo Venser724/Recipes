@@ -1,15 +1,19 @@
 package com.venser.recipes.ui.recipelist
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -57,18 +61,39 @@ fun RecipeListScreen(
             }
         },
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            items(viewModel.recipes, key = { it.id }) { recipe ->
-                RecipeRow(
-                    recipe = recipe,
-                    isSelected = recipe.id in viewModel.selectedRecipeIds,
-                    onSelectToggle = { viewModel.toggleSelected(recipe.id) },
-                    onOpen = { onOpenRecipe(recipe.id) },
-                )
+            if (viewModel.allTags.isNotEmpty()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                ) {
+                    items(viewModel.allTags) { tag ->
+                        FilterChip(
+                            selected = tag in viewModel.selectedTags,
+                            onClick = { viewModel.toggleTag(tag) },
+                            label = { Text(tag) },
+                        )
+                    }
+                }
+            }
+
+            if (viewModel.filteredRecipes.isEmpty()) {
+                Text("Рецепты с такими тегами не найдены", modifier = Modifier.padding(16.dp))
+            } else {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(viewModel.filteredRecipes, key = { it.id }) { recipe ->
+                        RecipeRow(
+                            recipe = recipe,
+                            isSelected = recipe.id in viewModel.selectedRecipeIds,
+                            onSelectToggle = { viewModel.toggleSelected(recipe.id) },
+                            onOpen = { onOpenRecipe(recipe.id) },
+                        )
+                    }
+                }
             }
         }
     }
@@ -97,7 +122,12 @@ private fun RecipeRow(
         }
         Column(modifier = Modifier.padding(start = 8.dp)) {
             Text(recipe.title)
-            Text("${recipe.category} · ${recipe.servings} порц.", style = MaterialTheme.typography.bodySmall)
+            val subtitle = if (recipe.tags.isEmpty()) {
+                "${recipe.servings} порц."
+            } else {
+                "${recipe.tags.joinToString(", ")} · ${recipe.servings} порц."
+            }
+            Text(subtitle, style = MaterialTheme.typography.bodySmall)
         }
     }
 }

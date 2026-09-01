@@ -1,8 +1,14 @@
 CREATE TABLE Recipe (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    category TEXT NOT NULL,
     servings INTEGER NOT NULL
+);
+
+CREATE TABLE RecipeTag (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    recipeId INTEGER NOT NULL,
+    tag TEXT NOT NULL,
+    FOREIGN KEY (recipeId) REFERENCES Recipe(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Ingredient (
@@ -38,10 +44,19 @@ selectRecipeById:
 SELECT * FROM Recipe WHERE id = ?;
 
 insertRecipe:
-INSERT INTO Recipe(title, category, servings) VALUES (?, ?, ?);
+INSERT INTO Recipe(title, servings) VALUES (?, ?);
 
 lastInsertRowId:
 SELECT last_insert_rowid();
+
+selectTagsForRecipe:
+SELECT * FROM RecipeTag WHERE recipeId = ? ORDER BY id;
+
+insertRecipeTag:
+INSERT INTO RecipeTag(recipeId, tag) VALUES (?, ?);
+
+selectAllTags:
+SELECT DISTINCT tag FROM RecipeTag ORDER BY tag;
 
 selectIngredientsForRecipe:
 SELECT * FROM Ingredient WHERE recipeId = ? ORDER BY id;

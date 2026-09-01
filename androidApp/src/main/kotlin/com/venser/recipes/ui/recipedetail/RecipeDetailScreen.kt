@@ -48,8 +48,13 @@ fun RecipeDetailScreen(appContainer: AppContainer, recipeId: Long) {
                 .padding(horizontal = 16.dp),
         ) {
             item {
+                val subtitle = if (recipe.tags.isEmpty()) {
+                    "${recipe.servings} порц."
+                } else {
+                    "${recipe.tags.joinToString(", ")} · ${recipe.servings} порц."
+                }
                 Text(
-                    "${recipe.category} · ${recipe.servings} порц.",
+                    subtitle,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(top = 8.dp),
                 )

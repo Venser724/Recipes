@@ -16,16 +16,22 @@ class RecipeRepository(private val database: RecipesDatabase) {
     fun getRecipe(id: Long): Recipe? =
         database.recipesQueries.selectRecipeById(id).executeAsOneOrNull()?.let(::toRecipe)
 
+    fun getAllTags(): List<String> =
+        database.recipesQueries.selectAllTags().executeAsList()
+
     fun addRecipe(
         title: String,
-        category: String,
+        tags: List<String>,
         servings: Int,
         ingredients: List<Ingredient>,
         steps: List<Step>,
     ) {
         database.transaction {
-            database.recipesQueries.insertRecipe(title = title, category = category, servings = servings.toLong())
+            database.recipesQueries.insertRecipe(title = title, servings = servings.toLong())
             val recipeId = database.recipesQueries.lastInsertRowId().executeAsOne()
+            tags.forEach { tag ->
+                database.recipesQueries.insertRecipeTag(recipeId = recipeId, tag = tag)
+            }
             ingredients.forEach { ingredient ->
                 database.recipesQueries.insertIngredient(
                     recipeId = recipeId,
@@ -46,6 +52,9 @@ class RecipeRepository(private val database: RecipesDatabase) {
     }
 
     private fun toRecipe(row: RecipeRow): Recipe {
+        val tags = database.recipesQueries.selectTagsForRecipe(row.id)
+            .executeAsList()
+            .map { it.tag }
         val ingredients = database.recipesQueries.selectIngredientsForRecipe(row.id)
             .executeAsList()
             .map(::toIngredient)
@@ -55,7 +64,7 @@ class RecipeRepository(private val database: RecipesDatabase) {
         return Recipe(
             id = row.id,
             title = row.title,
-            category = row.category,
+            tags = tags,
             servings = row.servings.toInt(),
             ingredients = ingredients,
             steps = steps,
