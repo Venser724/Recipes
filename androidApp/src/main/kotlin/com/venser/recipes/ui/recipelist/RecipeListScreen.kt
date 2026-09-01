@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -39,13 +40,28 @@ fun RecipeListScreen(
     appContainer: AppContainer,
     onOpenRecipe: (Long) -> Unit,
     onOpenShoppingList: () -> Unit,
+    onAddRecipe: () -> Unit,
 ) {
     val viewModel: RecipeListViewModel = viewModel(
         factory = viewModelFactory { initializer { RecipeListViewModel(appContainer) } },
     )
 
+    LifecycleResumeEffect(Unit) {
+        viewModel.refresh()
+        onPauseOrDispose { }
+    }
+
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Рецепты") }) },
+        topBar = {
+            TopAppBar(
+                title = { Text("Рецепты") },
+                actions = {
+                    IconButton(onClick = onAddRecipe) {
+                        Icon(painter = painterResource(id = R.drawable.ic_add), contentDescription = "Добавить рецепт")
+                    }
+                },
+            )
+        },
         bottomBar = {
             if (viewModel.selectedRecipeIds.isNotEmpty()) {
                 Button(
