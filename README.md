@@ -8,7 +8,7 @@ A step-by-step recipe app for Android, built with Kotlin Multiplatform and Compo
 
 - **Recipe list** with AND-filtering by category tags (a recipe must match every selected tag).
 - **Recipe detail**: ingredients, numbered steps with optional timers, and free-form notes.
-- **Shopping list**: pick recipes and generate a single aggregated list (same ingredient + unit across recipes is summed); tap an item to check it off.
+- **Shopping list**: pick recipes and generate a single aggregated list (matching ingredient/unit pairs across recipes are summed); tap an item to check it off.
 - **Add a recipe** by hand: title, tags, servings, notes, and dynamic ingredient/step rows.
 - **Delete a recipe**: a confirmation dialog on the recipe screen, or swipe left on the list for a quick one-tap delete.
 - **AI-assisted import**: send a structured JSON-schema prompt to any AI app installed on the phone (via the system share sheet), then bring the response back in:
@@ -43,9 +43,9 @@ The debug APK lands in `androidApp/build/outputs/apk/debug/`.
 
 ## Возможности
 
-- **Список рецептов** с фильтрацией по тегам по И (рецепт должен подходить под все выбранные теги одновременно).
+- **Список рецептов** с фильтрацией по тегам (логика «И» — рецепт должен подходить под все выбранные теги одновременно).
 - **Экран рецепта**: ингредиенты, пронумерованные шаги с опциональными таймерами, произвольные заметки.
-- **Список покупок**: выбираете рецепты — получаете один объединённый список (одинаковые ингредиент+единица измерения суммируются между рецептами); тап по пункту отмечает его как купленный.
+- **Список покупок**: выбираете рецепты — получаете один объединённый список (совпадающие пары «ингредиент + единица измерения» суммируются между рецептами); тап по пункту отмечает его как купленный.
 - **Добавление рецепта вручную**: название, теги, количество порций, заметки, динамические строки ингредиентов и шагов.
 - **Удаление рецепта**: диалог подтверждения на экране рецепта, либо свайп влево в списке для быстрого удаления в один тап.
 - **Импорт рецепта через нейронку**: отправляете структурированный JSON-шаблон в любое установленное на телефоне ИИ-приложение (через системное меню «Поделиться»), затем возвращаете ответ обратно:
