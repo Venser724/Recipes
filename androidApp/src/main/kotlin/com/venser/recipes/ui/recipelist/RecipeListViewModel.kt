@@ -49,4 +49,10 @@ class RecipeListViewModel(private val appContainer: AppContainer) : ViewModel() 
         appContainer.generateShoppingList(selectedRecipeIds.toList())
         selectedRecipeIds = emptySet()
     }
+
+    fun deleteRecipe(recipeId: Long) {
+        appContainer.deleteRecipe(recipeId)
+        recipes = recipes.filterNot { it.id == recipeId }
+        selectedRecipeIds = selectedRecipeIds - recipeId
+    }
 }
