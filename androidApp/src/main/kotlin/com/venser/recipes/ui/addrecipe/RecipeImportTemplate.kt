@@ -30,5 +30,4 @@ Rules:
 - If it is just a dish name or short description with no ingredient list or steps, first write a typical recipe for it yourself, then convert that recipe into the same JSON schema.
 
 Recipe to convert:
-<paste recipe text or attach a screenshot here>
 """.trimIndent()
