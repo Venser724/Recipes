@@ -1,0 +1,67 @@
+CREATE TABLE Recipe (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    servings INTEGER NOT NULL
+);
+
+CREATE TABLE Ingredient (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    recipeId INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    unit TEXT NOT NULL,
+    FOREIGN KEY (recipeId) REFERENCES Recipe(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Step (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    recipeId INTEGER NOT NULL,
+    stepOrder INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    timerSeconds INTEGER,
+    FOREIGN KEY (recipeId) REFERENCES Recipe(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ShoppingListItem (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    unit TEXT NOT NULL,
+    checked INTEGER NOT NULL DEFAULT 0
+);
+
+selectAllRecipes:
+SELECT * FROM Recipe ORDER BY title;
+
+selectRecipeById:
+SELECT * FROM Recipe WHERE id = ?;
+
+insertRecipe:
+INSERT INTO Recipe(title, servings) VALUES (?, ?);
+
+lastInsertRowId:
+SELECT last_insert_rowid();
+
+selectIngredientsForRecipe:
+SELECT * FROM Ingredient WHERE recipeId = ? ORDER BY id;
+
+insertIngredient:
+INSERT INTO Ingredient(recipeId, name, amount, unit) VALUES (?, ?, ?, ?);
+
+selectStepsForRecipe:
+SELECT * FROM Step WHERE recipeId = ? ORDER BY stepOrder;
+
+insertStep:
+INSERT INTO Step(recipeId, stepOrder, text, timerSeconds) VALUES (?, ?, ?, ?);
+
+selectAllShoppingItems:
+SELECT * FROM ShoppingListItem ORDER BY name;
+
+insertShoppingItem:
+INSERT INTO ShoppingListItem(name, amount, unit, checked) VALUES (?, ?, ?, 0);
+
+clearShoppingList:
+DELETE FROM ShoppingListItem;
+
+setShoppingItemChecked:
+UPDATE ShoppingListItem SET checked = ? WHERE id = ?;
