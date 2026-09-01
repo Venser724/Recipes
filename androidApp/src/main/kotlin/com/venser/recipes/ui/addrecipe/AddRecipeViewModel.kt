@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.venser.recipes.di.AppContainer
+import com.venser.recipes.domain.usecase.ParsedRecipe
 import com.venser.recipes.domain.usecase.parseIngredientInput
+import com.venser.recipes.domain.usecase.parseRecipeJson
 import com.venser.recipes.domain.usecase.parseStepInput
 
 class IngredientFormRow {
@@ -26,6 +28,9 @@ class AddRecipeViewModel(private val appContainer: AppContainer) : ViewModel() {
     var notes by mutableStateOf("")
 
     var servings by mutableStateOf(2)
+        private set
+
+    var importError by mutableStateOf<String?>(null)
         private set
 
     val ingredientRows = mutableStateListOf(IngredientFormRow())
@@ -54,6 +59,46 @@ class AddRecipeViewModel(private val appContainer: AppContainer) : ViewModel() {
     fun removeStepRow(row: StepFormRow) {
         if (stepRows.size > 1) stepRows.remove(row)
     }
+
+    fun importFromJson(json: String) {
+        parseRecipeJson(json)
+            .onSuccess { parsed -> applyImportedRecipe(parsed) }
+            .onFailure { error -> importError = error.message ?: "Не удалось разобрать файл" }
+    }
+
+    private fun applyImportedRecipe(parsed: ParsedRecipe) {
+        importError = null
+        title = parsed.title
+        tagsInput = parsed.tags.joinToString(", ")
+        servings = parsed.servings
+        notes = parsed.notes.orEmpty()
+
+        ingredientRows.clear()
+        parsed.ingredients.forEach { ingredient ->
+            ingredientRows.add(
+                IngredientFormRow().apply {
+                    name = ingredient.name
+                    amount = formatAmountForInput(ingredient.amount)
+                    unit = ingredient.unit
+                },
+            )
+        }
+        if (ingredientRows.isEmpty()) ingredientRows.add(IngredientFormRow())
+
+        stepRows.clear()
+        parsed.steps.forEach { step ->
+            stepRows.add(
+                StepFormRow().apply {
+                    text = step.text
+                    timerMinutes = step.timerSeconds?.let { (it / 60).toString() }.orEmpty()
+                },
+            )
+        }
+        if (stepRows.isEmpty()) stepRows.add(StepFormRow())
+    }
+
+    private fun formatAmountForInput(amount: Double): String =
+        if (amount == amount.toLong().toDouble()) amount.toLong().toString() else amount.toString()
 
     fun save() {
         val tags = tagsInput.split(",").map { it.trim() }.filter { it.isNotEmpty() }
